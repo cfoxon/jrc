@@ -116,7 +116,7 @@ func (srv *Server) ExecBatchFast(rs RPCRequests) ([][]byte, error) {
 	srv.startClients(maxConn)
 	rc := make(chan [][]byte)
 	go srv.responses(rc)
-	srv.url.Path = "/contracts"
+
 	uri := fasthttp.AcquireURI()
 
 	if err := uri.Parse(nil, []byte(srv.url.String())); err != nil {
