@@ -12,17 +12,17 @@ One of the project goals is to allow for optimal speeds when handling large amou
 ### Instantiate a server to query
 With default options:
 
-`r, _ := jrc.NewServer("https://api.hive-engine.com")`
+`srv, _ := jrc.NewServer("https://api.hive-engine.com")`
 
 
 With custom max connections:
 
-`r, _ := jrc.NewServer("https://api.hive-engine.com", jrc.MaxCon(10))`
+`srv, _ := jrc.NewServer("https://api.hive-engine.com", jrc.MaxCon(10))`
 
 
 Modify existing server options:
 
-`r.SetOption(jrc.MaxBatch(1000), jrc.MaxCon(10))`
+`srv.SetOption(jrc.MaxBatch(1000), jrc.MaxCon(10))`
 
 
 ### Creating requests
@@ -30,32 +30,32 @@ Params will be marshalled to JSON
 
 A single request:
 
-`q := jrc.RpcRequest{Method: query.method, JsonRpc: "2.0", Id: 1, Params: query}`
+`r := jrc.RpcRequest{Method: query.method, JsonRpc: "2.0", Id: 1, Params: query}`
 
 
 Many requests (jrc will batch according to `MaxBatch`):
 ```
-    var qs jrc.RPCRequests
+    var rs jrc.RPCRequests
     for i, query := range queries {
-        q := &jrc.RpcRequest{Method: query.method, JsonRpc: "2.0", Id: i, Params: query}
-        qs = append(qs, q)
+        r := &jrc.RpcRequest{Method: query.method, JsonRpc: "2.0", Id: i, Params: query}
+        rs = append(rs, q)
     }
 ```
 
 ### Executing requests
 A single request:
 
-`resp, _ := r.Exec(q)`
+`resp, _ := srv.Exec(r)`
 
 
 Multiple requests:
 
-`resps, _ := r.ExecBatch(qs)`
+`resps, _ := srv.ExecBatch(rs)`
 
 
 Multiple requests, no parsing (returns [][]byte):
 
-`resps, _ := r.ExecBatch(qs)`
+`resps, _ := srv.ExecBatchFast(rs)`
 
 ### Putting it all together
 
