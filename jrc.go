@@ -3,10 +3,11 @@ package jrc
 import (
 	"bytes"
 	"errors"
-	"github.com/goccy/go-json"
-	"github.com/valyala/fasthttp"
 	"net/url"
 	"sync"
+
+	"github.com/goccy/go-json"
+	"github.com/valyala/fasthttp"
 )
 
 type RPCRequests []*RpcRequest
@@ -230,7 +231,7 @@ func newDefaultServer(addr string) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	hc := &fasthttp.HostClient{Addr: u.Host}
+	hc := &fasthttp.HostClient{Addr: u.Host, DialDualStack: true}
 	if u.Scheme == "https" {
 		hc.IsTLS = true
 	}
