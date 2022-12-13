@@ -175,10 +175,11 @@ func (srv *Server) client() {
 				b = make([]byte, len(resp.Body()))
 				copy(b, resp.Body())
 			}
-			srv.wg.Done()
+			
 			if b != nil {
 				srv.resc <- b
 			}
+			srv.wg.Done()
 		}
 		fasthttp.ReleaseResponse(resp)
 	}
